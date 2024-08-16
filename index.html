@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <title>Markdown Previewer</title>
+    <style>
+        body {
+            background-color: FFFAFO;
+            background-image: 
+                linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
+                linear-gradient(#eee .1em, transparent .1em);
+            background-size: 100% 1.2em;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #editor, #preview {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            height: 80vh;
+            overflow-y: auto;
+        }
+        #editor {
+            font-family: 'Courier New', Courier, monospace;
+            color: #363b41;
+        }
+        #preview {
+            font-family: Arial, sans-serif;
+            color: #363b41;
+        }
+        #preview h1, #preview h2 {
+            color: #2c3e50;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        #preview code {
+            background-color: #f8f8f8;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #e74c3c;
+        }
+        #preview blockquote {
+            border-left: 3px solid #3498db;
+            padding-left: 20px;
+            color: #34495e;
+            font-style: italic;
+        }
+        .header {
+            background-color: #3498db;
+            color: white;
+            padding: 20px;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row header">
+            <div class="col text-center">
+                <h1>Markdown Previewer</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <h4>Editor</h4>
+                <textarea id="editor" class="form-control"></textarea>
+            </div>
+            <div class="col-md-6 mb-4">
+                <h4>Preview</h4>
+                <div id="preview"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script>
+        const markedOptions = {
+            breaks: true,
+        };
+
+        function updatePreview() {
+            const editorContent = document.getElementById("editor").value;
+            const htmlContent = marked.parse(editorContent, markedOptions);
+            document.getElementById("preview").innerHTML = htmlContent;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setDefault();
+            updatePreview();
+        });
+
+        document.getElementById("editor").addEventListener('input', updatePreview);
+
+        function setDefault() {
+            let defaultText = `# Welcome to my Markdown Previewer
+
+## This is a sub-heading...
+### And here's some other cool stuff:
+
+Here's some code, \`<div></div>\`, between 2 backticks.
+
+\`\`\`
+// this is multi-line code:
+
+function anotherExample(firstLine, lastLine) {
+  if (firstLine == '\`\`\`' && lastLine == '\`\`\`') {
+    return multiLineCode;
+  }
+}
+\`\`\`
+
+You can also make text **bold**... whoa!
+Or _italic_.
+Or... wait for it... **_both!_**
+And feel free to go crazy ~~crossing stuff out~~.
+
+There's also [links](https://www.freecodecamp.org), and
+> Block Quotes!
+
+And if you want to get really crazy, even tables:
+
+Wild Header | Crazy Header | Another Header?
+------------ | ------------- | -------------
+Your content can | be here, and it | can be here....
+And here. | Okay. | I think we get it.
+
+- And of course there are lists.
+  - Some are bulleted.
+     - With different indentation levels.
+        - That look like this.
+
+
+1. And there are numbered lists too.
+1. Use just 1s if you want!
+1. And last but not least, let's not forget embedded images:
+
+![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)
+
+Now, this is a new line.
+And this is another new line.`;
+
+            let editorField = document.getElementById("editor");
+            let previewElement = document.getElementById("preview");
+            editorField.value = defaultText;
+            previewElement.innerHTML = marked.parse(defaultText, markedOptions);
+        }
+    </script>
+</body>
+</html>
